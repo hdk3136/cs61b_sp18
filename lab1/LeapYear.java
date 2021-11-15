@@ -2,6 +2,17 @@
  *  @author YOUR NAME HERE
  */
 public class LeapYear {
+    /**Judge the input year is or not a leapyear and return the result by true or false
+     * @source my brain
+     */
+    public static boolean isLeapYear(int year){
+        if(year%400==0){
+            return true;
+        }else if(year%4==0&&year%100!=0){
+            return true;
+        }
+        return false;
+    }
 
     /** Calls isLeapYear to print correct statement.
      *  @param  year to be analyzed
@@ -18,7 +29,7 @@ public class LeapYear {
     public static void main(String[] args) {
         if (args.length < 1) {
             System.out.println("Please enter command line arguments.");
-            System.out.println("e.g. java Year 2000");
+            System.out.println("e.g. java LeapYear 2000");
         }
         for (int i = 0; i < args.length; i++) {
             try {
