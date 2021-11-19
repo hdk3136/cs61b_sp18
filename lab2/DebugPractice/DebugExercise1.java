@@ -4,8 +4,8 @@
  */
 public class DebugExercise1 {
     public static int divideThenRound(int top, int bottom) {
-        int quotient = top / bottom;
-        int result = Math.round(quotient);
+        double quotient = (top * 10 / bottom) / 10.0;
+        int result = (int)Math.round(quotient);
         return result;
     }
 

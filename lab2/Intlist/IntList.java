@@ -79,19 +79,48 @@ public class IntList {
      * Returns a list consisting of the elements of A followed by the
      * *  elements of B.  May modify items of A. Don't use 'new'.
      */
-
+    /**dcatenate Recursively*/
+    /*public static IntList dcatenate(IntList A, IntList B) {
+        if (A.rest == null) {
+            A.rest = new IntList(B.first, B.rest);
+        } else {
+            A.rest = dcatenate(A.rest, B);
+        }
+        return A;
+    }*/
+    /**dcatenate Iteratively*/
     public static IntList dcatenate(IntList A, IntList B) {
-        //TODO:  fill in method
-        return null;
+        IntList p = A;
+        while (p.rest != null) {
+            p = p.rest;
+        }
+        p.rest = B;
+        return A;
     }
 
     /**
      * Returns a list consisting of the elements of A followed by the
      * * elements of B.  May NOT modify items of A.  Use 'new'.
      */
+    /**catenate Iteratively*/
+    /*public static IntList catenate(IntList A, IntList B) {
+        IntList L = new IntList(A.first, null);
+        IntList p = L;
+        while (A.rest != null) {
+            A = A.rest;
+            p.rest = new IntList(A.first, null);
+            p = p.rest;
+        }
+        p.rest = B;
+        return L;
+    }*/
+    /**catenate Recursively*/
     public static IntList catenate(IntList A, IntList B) {
-        //TODO:  fill in method
-        return null;
+        if (A.rest == null) {
+            IntList L = new IntList(A.first, B);
+            return L;
+        }
+        return new IntList(A.first, catenate(A.rest, B));
     }
 
 
