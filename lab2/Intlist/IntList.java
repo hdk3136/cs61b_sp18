@@ -90,6 +90,12 @@ public class IntList {
     }*/
     /**dcatenate Iteratively*/
     public static IntList dcatenate(IntList A, IntList B) {
+        if (A == null) {
+            return B;
+        }
+        if (B == null) {
+            return A;
+        }
         IntList p = A;
         while (p.rest != null) {
             p = p.rest;
@@ -116,6 +122,12 @@ public class IntList {
     }*/
     /**catenate Recursively*/
     public static IntList catenate(IntList A, IntList B) {
+        if (A == null) {
+            return B;
+        }
+        if (B == null) {
+            return A;
+        }
         if (A.rest == null) {
             IntList L = new IntList(A.first, B);
             return L;
