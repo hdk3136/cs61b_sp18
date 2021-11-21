@@ -4,12 +4,14 @@ public class ArrayDeque<T> {
     private int nextFirst;
     private int nextLast;
     private int size;
+    private double usageFactor;
 
     public ArrayDeque() {
         items = (T[]) new Object[8];
         nextFirst = 4;
         nextLast = 5;
         size = 0;
+        usageFactor = 0.0;
     }
 
     public ArrayDeque(ArrayDeque other) {
@@ -17,14 +19,19 @@ public class ArrayDeque<T> {
         nextFirst = other.size() - other.size() / 2;
         nextLast = nextFirst + other.size() + 1;
         if (other.nextFirst < other.nextLast) {
-            System.arraycopy(other, other.nextFirst + 1, items, this.nextFirst + 1, other.size());
+            System.arraycopy(other.items, other.nextFirst + 1, items, this.nextFirst + 1, other.size());
         } else {
-            System.arraycopy(other, other.nextFirst + 1, items,
+            System.arraycopy(other.items, other.nextFirst + 1, items,
                      nextFirst + 1, other.items.length - 1 - other.nextFirst);
-            System.arraycopy(other, 0, items,
+            System.arraycopy(other.items, 0, items,
                      nextFirst + other.items.length - other.nextFirst, other.nextLast);
         }
         this.size = other.size();
+        updateUsageFactor();
+    }
+
+    private void updateUsageFactor() {
+        this.usageFactor = (double) (this.size / this.items.length);
     }
 
     private int updateAdd(int n) {
@@ -45,34 +52,52 @@ public class ArrayDeque<T> {
         return n;
     }
 
-    private void resize() {
-        if (nextFirst == nextLast + 1 || nextLast - nextFirst == this.size() - 1) {
-            T[] newItems = (T[]) new Object[this.items.length * 2];
-            int newNextFirst = this.items.length - this.items.length / 2;
-            int newNextLast = newNextFirst + this.size() + 1;
+    private void resizeBigger() {
+        if (size + 2 >= items.length) {
+            T[] bItems = (T[]) new Object[items.length * 2];
+            int bNextFirst = items.length - items.length / 2;
+            int bNextLast = bNextFirst + size + 1;
             if (nextFirst < nextLast) {
-                System.arraycopy(items, nextFirst + 1, newItems, newNextFirst + 1, this.size());
+                System.arraycopy(items, nextFirst + 1, bItems, bNextFirst + 1, size);
             } else {
-                System.arraycopy(items, nextFirst + 1, newItems,
-                         newNextFirst + 1, items.length - 1 - nextFirst);
-                System.arraycopy(items, 0, newItems,
-                         newNextFirst + items.length - nextFirst, nextLast);
+                System.arraycopy(items, nextFirst + 1, bItems,
+                         bNextFirst + 1, items.length - 1 - nextFirst);
+                System.arraycopy(items, 0, bItems,
+                         bNextFirst + items.length - nextFirst, nextLast);
             }
-            items = newItems;
-            nextFirst = newNextFirst;
-            nextLast = newNextLast;
+            items = bItems;
+            nextFirst = bNextFirst;
+            nextLast = bNextLast;
         }
+        updateUsageFactor();
+    }
+
+    private void resizeSmaller() {
+        T[] sItems = (T[]) new Object[items.length / 2];
+        int sNextFirst = items.length / 8;
+        int sNextLast = sNextFirst + size + 1;
+        if (nextFirst < nextLast) {
+            System.arraycopy(items, nextFirst + 1, sItems, sNextFirst + 1, size);
+        } else {
+            System.arraycopy(items, nextFirst + 1, sItems,
+                     sNextFirst + 1, items.length - 1 - nextFirst);
+            System.arraycopy(items, 0, sItems,
+                     sNextFirst + items.length - nextFirst, nextLast);
+        }
+        items = sItems;
+        nextFirst = sNextFirst;
+        nextLast = sNextLast;
     }
 
     public void addFirst(T item) {
-        resize();
+        resizeBigger();
         items[nextFirst] = item;
         nextFirst = updateMinus(nextFirst);
         size += 1;
     }
 
     public void addLast(T item) {
-        resize();
+        resizeBigger();
         items[nextLast] = item;
         nextLast = updateAdd(nextLast);
         size += 1;
@@ -98,6 +123,10 @@ public class ArrayDeque<T> {
             return null;
         } else {
             T first = items[updateAdd(nextFirst)];
+            if (size >= 16 && usageFactor < 0.25) {
+                resizeSmaller();
+            }
+            updateUsageFactor();
             nextFirst = updateAdd(nextFirst);
             size -= 1;
             if (size == 0) {
@@ -113,6 +142,10 @@ public class ArrayDeque<T> {
             return null;
         } else {
             T last = items[updateMinus(nextLast)];
+            if (size >= 16 && usageFactor < 0.25) {
+                resizeSmaller();
+            }
+            updateUsageFactor();
             nextLast = updateMinus(nextLast);
             size -= 1;
             if (size == 0) {
