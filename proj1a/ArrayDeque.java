@@ -1,7 +1,5 @@
 public class ArrayDeque<T> {
-    private static class TArray{
 
-    }
     private T[] items;
     private int nextFirst;
     private int nextLast;
@@ -21,13 +19,15 @@ public class ArrayDeque<T> {
         if (other.nextFirst < other.nextLast) {
             System.arraycopy(other, other.nextFirst + 1, items, this.nextFirst + 1, other.size());
         } else {
-            System.arraycopy(other, other.nextFirst + 1, items, this.nextFirst + 1, other.items.length - 1 - other.nextFirst);
-            System.arraycopy(other, 0, items, this.nextFirst + other.items.length - other.nextFirst, other.nextLast);
+            System.arraycopy(other, other.nextFirst + 1, items,
+                     nextFirst + 1, other.items.length - 1 - other.nextFirst);
+            System.arraycopy(other, 0, items,
+                     nextFirst + other.items.length - other.nextFirst, other.nextLast);
         }
         this.size = other.size();
     }
 
-    public int UpdateAdd(int n) {
+    private int updateAdd(int n) {
         if (n == this.items.length - 1) {
             n = 0;
         } else {
@@ -36,7 +36,7 @@ public class ArrayDeque<T> {
         return n;
     }
 
-    public int UpdateMinus(int n) {
+    private int updateMinus(int n) {
         if (n == 0) {
             n = this.items.length - 1;
         } else {
@@ -45,34 +45,36 @@ public class ArrayDeque<T> {
         return n;
     }
 
-    public void Resize() {
+    private void resize() {
         if (nextFirst == nextLast + 1 || nextLast - nextFirst == this.size() - 1) {
-            T[] new_items = (T[]) new Object[this.items.length * 2];
-            int new_nextFirst = this.items.length- this.items.length / 2;
-            int new_nextLast = new_nextFirst + this.size() + 1;
+            T[] newItems = (T[]) new Object[this.items.length * 2];
+            int newNextFirst = this.items.length - this.items.length / 2;
+            int newNextLast = newNextFirst + this.size() + 1;
             if (nextFirst < nextLast) {
-                System.arraycopy(items, nextFirst + 1, new_items, new_nextFirst + 1, this.size());
+                System.arraycopy(items, nextFirst + 1, newItems, newNextFirst + 1, this.size());
             } else {
-                System.arraycopy(items, nextFirst + 1, new_items, new_nextFirst + 1, items.length - 1 - nextFirst);
-                System.arraycopy(items, 0, new_items, new_nextFirst + items.length - nextFirst, nextLast);
+                System.arraycopy(items, nextFirst + 1, newItems,
+                         newNextFirst + 1, items.length - 1 - nextFirst);
+                System.arraycopy(items, 0, newItems,
+                         newNextFirst + items.length - nextFirst, nextLast);
             }
-            items = new_items;
-            nextFirst =new_nextFirst;
-            nextLast = new_nextLast;
+            items = newItems;
+            nextFirst = newNextFirst;
+            nextLast = newNextLast;
         }
     }
 
     public void addFirst(T item) {
-        Resize();
+        resize();
         items[nextFirst] = item;
-        nextFirst = UpdateMinus(nextFirst);
+        nextFirst = updateMinus(nextFirst);
         size += 1;
     }
 
     public void addLast(T item) {
-        Resize();
+        resize();
         items[nextLast] = item;
-        nextLast = UpdateAdd(nextLast);
+        nextLast = updateAdd(nextLast);
         size += 1;
     }
 
@@ -102,15 +104,15 @@ public class ArrayDeque<T> {
     }
 
     public T removeFirst() {
-        nextFirst = UpdateAdd(nextFirst);
+        nextFirst = updateAdd(nextFirst);
         size -= 1;
-        return items[UpdateAdd(nextFirst)];
+        return items[updateAdd(nextFirst)];
     }
 
     public T removeLast() {
-        nextLast = UpdateMinus(nextLast);
+        nextLast = updateMinus(nextLast);
         size -= 1;
-        return items[UpdateMinus(nextLast)];
+        return items[updateMinus(nextLast)];
     }
 
     public T get(int index) {

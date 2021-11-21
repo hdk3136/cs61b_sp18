@@ -32,7 +32,7 @@ public class LinkedListDeque<T> {
         sentinel.next = sentinel;
         size = 0;
         for (int i = 0; i < other.size; i++) {
-            this.addLast((T)other.get(i));
+            this.addLast((T) other.get(i));
         }
     }
 
@@ -71,10 +71,11 @@ public class LinkedListDeque<T> {
         if (sentinel.next == sentinel) {
             return null;
         } else {
+            T first = sentinel.next.item;
             size -= 1;
             sentinel.next = sentinel.next.next;
             sentinel.next.previous = sentinel;
-            return sentinel.next.item;
+            return first;
         }
     }
 
@@ -82,17 +83,18 @@ public class LinkedListDeque<T> {
         if (sentinel.next == sentinel) {
             return null;
         } else {
+            T last = sentinel.previous.item;
             size -= 1;
             sentinel.previous = sentinel.previous.previous;
             sentinel.previous.next = sentinel;
-            return sentinel.previous.item;
+            return last;
         }
     }
 
     public T get(int index) {
         TNode p = sentinel;
         int n = 0;
-        while(p.next != sentinel) {
+        while (p.next != sentinel) {
             p = p.next;
             if (index == n) {
                 return p.item;
@@ -110,7 +112,7 @@ public class LinkedListDeque<T> {
         }
     }
 
-    public T getRecursive(int index) {
+    private T getRecursive(int index) {
         if (sentinel.next == sentinel) {
             return null;
         }
