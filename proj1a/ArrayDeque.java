@@ -87,32 +87,40 @@ public class ArrayDeque<T> {
     }
 
     public void printDeque() {
-        if (nextFirst < nextLast) {
-            for (int i = nextFirst + 1; i < nextLast; i++) {
-                System.out.print(items[i] + " ");
-            }
-        } else {
-            for (int i = nextFirst + 1; i < items.length; i++) {
-                System.out.print(items[i] + " ");
-            }
-            for (int j = 0; j < nextLast; j++) {
-                System.out.print(items[j] + " ");
-            }
+        for (int i = 0; i < size; i++) {
+            System.out.print(get(i) + " ");
         }
         System.out.println();
-
     }
 
     public T removeFirst() {
-        nextFirst = updateAdd(nextFirst);
-        size -= 1;
-        return items[updateAdd(nextFirst)];
+        if (isEmpty()) {
+            return null;
+        } else {
+            T first = items[updateAdd(nextFirst)];
+            nextFirst = updateAdd(nextFirst);
+            size -= 1;
+            if (size == 0) {
+                nextFirst = 4;
+                nextLast = 5;
+            }
+            return first;
+        }
     }
 
     public T removeLast() {
-        nextLast = updateMinus(nextLast);
-        size -= 1;
-        return items[updateMinus(nextLast)];
+        if (isEmpty()) {
+            return null;
+        } else {
+            T last = items[updateMinus(nextLast)];
+            nextLast = updateMinus(nextLast);
+            size -= 1;
+            if (size == 0) {
+                nextFirst = 4;
+                nextLast = 5;
+            }
+            return last;
+        }
     }
 
     public T get(int index) {

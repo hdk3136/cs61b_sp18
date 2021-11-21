@@ -5,9 +5,7 @@ public class LinkedListDeque<T> {
         TNode next;
 
         TNode() {
-            item = null;
-            previous = null;
-            next = null;
+
         }
 
         TNode(T it, TNode pre, TNode nex) {
@@ -113,9 +111,6 @@ public class LinkedListDeque<T> {
     }
 
     private T getRecursive(int index) {
-        if (sentinel.next == sentinel) {
-            return null;
-        }
         return getRecursiveHelper(sentinel.next, index);
     }
 }
