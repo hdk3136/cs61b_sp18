@@ -14,24 +14,8 @@ public class ArrayDeque<T> {
         usageFactor = 0.0;
     }
 
-    public ArrayDeque(ArrayDeque other) {
-        items = (T[]) new Object[other.size() * 2];
-        nextFirst = other.size() - other.size() / 2;
-        nextLast = nextFirst + other.size() + 1;
-        if (other.nextFirst < other.nextLast) {
-            System.arraycopy(other.items, other.nextFirst + 1, items, this.nextFirst + 1, other.size());
-        } else {
-            System.arraycopy(other.items, other.nextFirst + 1, items,
-                     nextFirst + 1, other.items.length - 1 - other.nextFirst);
-            System.arraycopy(other.items, 0, items,
-                     nextFirst + other.items.length - other.nextFirst, other.nextLast);
-        }
-        this.size = other.size();
-        updateUsageFactor();
-    }
-
     private void updateUsageFactor() {
-        this.usageFactor = (double) (this.size / this.items.length);
+        this.usageFactor = (double) size / (double) items.length;
     }
 
     private int updateAdd(int n) {
@@ -69,7 +53,6 @@ public class ArrayDeque<T> {
             nextFirst = bNextFirst;
             nextLast = bNextLast;
         }
-        updateUsageFactor();
     }
 
     private void resizeSmaller() {
@@ -123,10 +106,10 @@ public class ArrayDeque<T> {
             return null;
         } else {
             T first = items[updateAdd(nextFirst)];
+            updateUsageFactor();
             if (size >= 16 && usageFactor < 0.25) {
                 resizeSmaller();
             }
-            updateUsageFactor();
             nextFirst = updateAdd(nextFirst);
             size -= 1;
             if (size == 0) {
@@ -142,10 +125,10 @@ public class ArrayDeque<T> {
             return null;
         } else {
             T last = items[updateMinus(nextLast)];
+            updateUsageFactor();
             if (size >= 16 && usageFactor < 0.25) {
                 resizeSmaller();
             }
-            updateUsageFactor();
             nextLast = updateMinus(nextLast);
             size -= 1;
             if (size == 0) {
@@ -157,7 +140,7 @@ public class ArrayDeque<T> {
     }
 
     public T get(int index) {
-        return items[(nextFirst + 1 + index) % items.length];
+        return items[(updateAdd(nextFirst) + index) % items.length];
     }
 
 
