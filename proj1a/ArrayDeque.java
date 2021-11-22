@@ -107,7 +107,7 @@ public class ArrayDeque<T> {
         } else {
             T first = items[updateAdd(nextFirst)];
             updateUsageFactor();
-            if (size >= 16 && usageFactor < 0.25) {
+            if (items.length >= 16 && usageFactor < 0.25) {
                 resizeSmaller();
             }
             nextFirst = updateAdd(nextFirst);
@@ -126,7 +126,7 @@ public class ArrayDeque<T> {
         } else {
             T last = items[updateMinus(nextLast)];
             updateUsageFactor();
-            if (size >= 16 && usageFactor < 0.25) {
+            if (items.length >= 16 && usageFactor < 0.25) {
                 resizeSmaller();
             }
             nextLast = updateMinus(nextLast);
