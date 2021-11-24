@@ -20,15 +20,15 @@ public class TestPalindrome {
     public void testPalindrome() {
         String input1 = "racecar";
         String input2 = "rererdssr";
-        assertTrue(Palindrome.isPalindrome(input1));
-        assertFalse(Palindrome.isPalindrome(input2));
+        assertTrue(palindrome.isPalindrome(input1));
+        assertFalse(palindrome.isPalindrome(input2));
     }
 
     @Test
     public void testSpecialPalindrome() {
-        assertFalse(Palindrome.isPalindrome("Aa"));
-        assertTrue(Palindrome.isPalindrome(" "));
-        assertTrue(Palindrome.isPalindrome("A"));
+        assertFalse(palindrome.isPalindrome("Aa"));
+        assertTrue(palindrome.isPalindrome(" "));
+        assertTrue(palindrome.isPalindrome("A"));
     }
 
     @Test
