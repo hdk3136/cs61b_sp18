@@ -1,6 +1,6 @@
 /** A client that uses the synthesizer package to replicate a plucked guitar string sound */
 public class GuitarHero {
-    private static final String keyboard = "q2we4r5ty7u8i9op-[=zxdcfvgbnjmk,.;/' ";
+    private static final String KEYBOARD = "q2we4r5ty7u8i9op-[=zxdcfvgbnjmk,.;/' ";
     private static int flag;
     public static void main(String[] args) {
         /* create two guitar strings, for concert A and C */
@@ -14,7 +14,7 @@ public class GuitarHero {
             if (StdDraw.hasNextKeyTyped()) {
                 char key = StdDraw.nextKeyTyped();
                 for (int i = 0; i < 37; i += 1) {
-                    if (key == keyboard.charAt(i)) {
+                    if (key == KEYBOARD.charAt(i)) {
                         stringArr[i].pluck();
                         flag = i;
                         break;
