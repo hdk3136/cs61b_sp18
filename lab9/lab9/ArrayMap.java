@@ -60,6 +60,7 @@ public class ArrayMap<K, V> implements Map61B<K, V> {
     private void resize(int capacity) {
         K[] newKeys = (K[]) new Object[capacity];
         V[] newValues = (V[]) new Object[capacity];
+
         System.arraycopy(keys, 0, newKeys, 0, size);
         System.arraycopy(values, 0, newValues, 0, size);
         keys = newKeys;
