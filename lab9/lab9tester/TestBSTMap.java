@@ -102,12 +102,29 @@ public class TestBSTMap {
         for (Integer i : real) {
             System.out.println(i);
         }
-        b.remove(3);
-        HashSet<Integer> real2 = new HashSet<>();
-        real = (HashSet<Integer>) b.keySet();
-        for (Integer i : real) {
+    }
+
+    @Test
+    public void RemoveTest() {
+        BSTMap<String, String> b = new BSTMap<>();
+        b.put("w", "hi");
+        b.put("q", "old");
+        b.put("a", "ol");
+        b.put("s", "man");
+        b.put("o", "mn");
+        b.put("p", "n");
+        b.put("r", "nx");
+
+        b.remove("r");
+        for (String i :b) {
             System.out.println(i);
         }
+
+        /*HashSet<String> real = new HashSet<>();
+        real = (HashSet<String>) b.keySet();
+        for (String i : real) {
+            System.out.println(i);
+        }*/
     }
 
     public static void main(String[] args) {

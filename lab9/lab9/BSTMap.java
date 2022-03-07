@@ -115,17 +115,6 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
     }
 
 
-    private Node getNode(K key, Node p) {
-        if (p == null) {
-            return null;
-        }
-        if (key.compareTo(p.key) == 0) {
-            return p;
-        } else {
-            return key.compareTo(p.key) < 0 ? getNode(key, p.left) : getNode(key, p.right);
-        }
-    }
-
     private Node leftMax(Node old) {
         Node p = old.left;
         while (p.right != null) {
@@ -147,7 +136,7 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
                 Node leftMax = leftMax(p);
                 p.key = leftMax.key;
                 p.value = leftMax.value;
-                removeHelper(key, leftMax);
+                leftMax = removeHelper(leftMax.key, leftMax);
             }
         } else if (key.compareTo(p.key) < 0) {
             p = removeHelper(key, p.left);
@@ -187,6 +176,6 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
 
     @Override
     public Iterator<K> iterator() {
-        throw new UnsupportedOperationException();
+        return keySet().iterator();
     }
 }
