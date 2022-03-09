@@ -72,11 +72,16 @@ public class Percolation {
         if (!validate(row, col)) {
             throw new java.lang.IndexOutOfBoundsException();
         }
-        for (int i = 0; i < n; i += 1) {
-            if (wqu.connected(xyToNum(0, i), xyToNum(row, col))) {
-                return true;
+        if (row == 0) {
+            return isOpen(row, col);
+        } else {
+            for (int i = 0; i < n; i += 1) {
+                if (wqu.connected(xyToNum(0, i), xyToNum(row, col))) {
+                    return true;
+                }
             }
         }
+
         return false;
 
     }
@@ -94,6 +99,10 @@ public class Percolation {
             }
         }
         return false;
+    }
+
+    public static void main(String[] args) {
+
     }
 
 
