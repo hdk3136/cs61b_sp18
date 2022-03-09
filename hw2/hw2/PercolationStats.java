@@ -3,14 +3,14 @@ import edu.princeton.cs.introcs.StdRandom;
 import edu.princeton.cs.introcs.StdStats;
 
 public class PercolationStats {
-    private int[] x;
+    private double[] x;
 
     // perform T independent experiments on an N-by-N grid
     public PercolationStats(int N, int T, PercolationFactory pf) {
         if (N <= 0 || T <= 0) {
             throw new java.lang.IllegalArgumentException();
         }
-        x = new int[T];
+        x = new double[T];
         for (int i = 0; i < T; i += 1) {
             Percolation test = pf.make(N);
             while (!test.percolates()) {
@@ -20,7 +20,7 @@ public class PercolationStats {
                     test.open(row, col);
                 }
             }
-            x[i] = test.numberOfOpenSites();
+            x[i] = (double)test.numberOfOpenSites() / (N * N);
         }
     }
 
