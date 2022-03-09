@@ -6,7 +6,10 @@ import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 public class Percolation {
     private final int n;
     private final boolean[][] sites;
-    private WeightedQuickUnionUF wqu;
+    private final int topNode;
+    private final int bottomNode;
+    private WeightedQuickUnionUF wquAll;
+    private WeightedQuickUnionUF wquNoBottomNode;
     private int numOfOpenSites;
 
     // create N-by-N grid, with all sites initially blocked
@@ -15,13 +18,17 @@ public class Percolation {
             throw new java.lang.IllegalArgumentException();
         }
         this.n = N;
+        topNode = N * N;
+        bottomNode = N * N + 1; // the value of topNode and bottomNode is indifferent
         sites = new boolean[N][N];
+
         for (int i = 0; i < N; i += 1) {
             for (int j = 0; j < N; j += 1) {
                 sites[i][j] = false;
             }
         }
-        wqu = new WeightedQuickUnionUF(N * N);
+        wquAll = new WeightedQuickUnionUF(N * N + 2);
+        wquNoBottomNode = new WeightedQuickUnionUF(N * N + 1);
         numOfOpenSites = 0;
     }
 
@@ -35,17 +42,28 @@ public class Percolation {
     }
 
     private void updateUnion(int row, int col) {
+        if (row == 0) {
+            wquAll.union(topNode, xyToNum(row, col));
+            wquNoBottomNode.union(topNode, xyToNum(row, col));
+        }
+        if (row == n - 1) {
+            wquAll.union(bottomNode, xyToNum(row, col));
+        }
         if (validate(row + 1, col) && isOpen(row + 1, col)) {
-            wqu.union(xyToNum(row, col), xyToNum(row + 1, col));
+            wquAll.union(xyToNum(row, col), xyToNum(row + 1, col));
+            wquNoBottomNode.union(xyToNum(row, col), xyToNum(row + 1, col));
         }
         if (validate(row - 1, col) && isOpen(row - 1, col)) {
-            wqu.union(xyToNum(row, col), xyToNum(row - 1, col));
+            wquAll.union(xyToNum(row, col), xyToNum(row - 1, col));
+            wquNoBottomNode.union(xyToNum(row, col), xyToNum(row - 1, col));
         }
         if (validate(row, col + 1) && isOpen(row, col + 1)) {
-            wqu.union(xyToNum(row, col), xyToNum(row, col + 1));
+            wquAll.union(xyToNum(row, col), xyToNum(row, col + 1));
+            wquNoBottomNode.union(xyToNum(row, col), xyToNum(row, col + 1));
         }
         if (validate(row, col - 1) && isOpen(row, col - 1)) {
-            wqu.union(xyToNum(row, col), xyToNum(row, col - 1));
+            wquAll.union(xyToNum(row, col), xyToNum(row, col - 1));
+            wquNoBottomNode.union(xyToNum(row, col), xyToNum(row, col - 1));
         }
     }
 
@@ -54,8 +72,10 @@ public class Percolation {
         if (!validate(row, col)) {
             throw new java.lang.IndexOutOfBoundsException();
         }
+        if (sites[row][col] = false) {
+            numOfOpenSites += 1;
+        }
         sites[row][col] = true;
-        numOfOpenSites += 1;
         updateUnion(row, col);
     }
 
@@ -72,18 +92,7 @@ public class Percolation {
         if (!validate(row, col)) {
             throw new java.lang.IndexOutOfBoundsException();
         }
-        if (row == 0) {
-            return isOpen(row, col);
-        } else {
-            for (int i = 0; i < n; i += 1) {
-                if (wqu.connected(xyToNum(0, i), xyToNum(row, col))) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-
+        return wquNoBottomNode.connected(topNode, xyToNum(row, col));
     }
 
     // number of open sites
@@ -93,12 +102,7 @@ public class Percolation {
 
     // does the system percolate?
     public boolean percolates() {
-        for (int i = 0; i < n; i += 1) {
-            if (isFull(n - 1, i)) {
-                return true;
-            }
-        }
-        return false;
+        return wquAll.connected(topNode, bottomNode);
     }
 
     public static void main(String[] args) {
