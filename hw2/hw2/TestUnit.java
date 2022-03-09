@@ -10,6 +10,8 @@ public class TestUnit {
         assertFalse(test.isOpen(0, 0));
         assertFalse(test.isFull(0, 0));
         test.open(0, 5);
+        int i = test.numberOfOpenSites();
+        assertEquals(1,test.numberOfOpenSites());
         test.open(1, 5);
         assertTrue(test.isFull(1, 5));
 

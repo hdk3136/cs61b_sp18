@@ -72,7 +72,7 @@ public class Percolation {
         if (!validate(row, col)) {
             throw new java.lang.IndexOutOfBoundsException();
         }
-        if (sites[row][col] = false) {
+        if (!sites[row][col]) {
             numOfOpenSites += 1;
         }
         sites[row][col] = true;
